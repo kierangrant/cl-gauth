@@ -19,10 +19,8 @@ sbcl --noinform --lose-on-corruption --no-userinit --no-sysinit --noprint --disa
     (user-homedir-pathname))))) """ \
 	   --eval """
 (muffle
- (if (uiop/filesystem:file-exists-p
-      (merge-pathnames \"quicklisp/setup.lisp\"
-         (user-homedir-pathname)))
-       (ql:quickload \"cl-gauth\" :vebose nil :silent t)
+ (if (and (find-package \"QL\") (find-symbol \"QUICKLOAD\" (find-package \"QL\")))
+       (funcall (find-symbol \"QUICKLOAD\" (find-package \"QL\")) \"cl-gauth\" :vebose nil :silent t)
    (asdf:operate 'asdf:load-op \"cl-gauth\" :verbose nil)))
 """ \
 	   --eval """
