@@ -1,0 +1,8 @@
+A port of gauth at https://github.com/pcarrier/gauth to Common LISP
+
+Depends on Ironclad, cl-base32 and split-sequence.
+
+Licensed under MIT, as per gauth.
+
+It does not do Decryption naively, but instead invokes OpenSSL to do do decryption of file.
+Unlike gauth, it will only read in decryption from ~/.config/gauth.csv.aes256 using AES256 not AES128.
