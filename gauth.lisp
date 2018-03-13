@@ -34,7 +34,7 @@
     (format nil "~6,'0d" (mod number 1000000))))
 
 (defun main ()
-  (let ((file-content
+  (let* ((file-content
 	 (if (uiop/filesystem:file-exists-p
 	      (merge-pathnames ".config/gauth.csv.aes256" (user-homedir-pathname)))
 	     (with-input-from-string (in
@@ -49,16 +49,18 @@
 	       (loop for line = (read-line in nil nil) until (null line) collecting line))
 	     (with-open-file (in (merge-pathnames ".config/gauth.csv" (user-homedir-pathname))
 				 :direction :input)
-	       (loop for line = (read-line in nil nil) until (null line) collecting line)))))
+	       (loop for line = (read-line in nil nil) until (null line) collecting line))))
+	(max-length (max 10 (loop for item in file-content maximizing (length (elt (split-sequence:split-sequence #\: item) 0))))))
     (multiple-value-bind (current-time progress) (time-stamp)
-      (format t "           prev   curr   next~%")
+      (format t (format nil "~~~dt prev   curr   next~~%" max-length))
       (loop for line in file-content do
 	   (let* ((seq (split-sequence:split-sequence #\: line))
 		  (name (elt seq 0)) (secret (normalize-secret (elt seq 1))))
-	     (format t "~10a ~a ~a ~a~%" name
+	     (format t "~@? ~a ~a ~a~%"
+		     (format nil "~~~da" max-length)
+		     name
 		     (auth-code secret (1- current-time))
 		     (auth-code secret current-time)
 		     (auth-code secret (1+ current-time)))))
-      (dotimes (i progress) (write-char #\=))
+      (format t "[~29a]~%" (with-output-to-string (out) (dotimes (i progress) (write-char #\= out))))
       (terpri))))
-
