@@ -6,3 +6,28 @@ Licensed under MIT, as per gauth.
 
 It does not do Decryption naively, but instead invokes OpenSSL to do do decryption of file.
 Unlike gauth, it will only read in decryption from ~/.config/gauth.csv.aes256 using AES256 not AES128.
+
+Installation
+============
+
+The easiest way to get up and running is to use SBCL and Quicklisp.
+
+Install sbcl using your package management system or download from www.sbcl.org
+
+The open a terminal and do this:
+cd ~
+mkdir common-lisp
+cd common-lisp
+git clone https://github.com/kierangrant/cl-gauth.git
+wget https://beta.quicklisp.org/quicklisp.lisp
+sbcl --load quicklisp.lisp
+;; Type the following into the LISP REPL
+(quicklisp-quickstart:install)
+(ql:quickload "cl-gauth") ;; To speed up first run, it will download and install all dependencies
+(exit)
+
+Now you can make a symbolic link in ~/bin to point to the script:
+ln -s ~/common-lisp/cl-gauth/run.sh ~/bin/gauth
+
+Make sure your gauth.csv or gauth.csv.aes256 is installed in ~/.config
+Also make sure only you can read it! (Recommended to use the encryption variant)
