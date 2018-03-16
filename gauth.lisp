@@ -34,6 +34,10 @@
     (format nil "~6,'0d" (mod number 1000000))))
 
 (defun main ()
+  (if (not (or
+	    (uiop/filesystem:file-exists-p (merge-pathnames ".config/gauth.csv.aes256" (user-homedir-pathname)))
+	    (uiop/filesystem:file-exists-p (merge-pathnames ".config/gauth.csv" (user-homedir-pathname)))))
+      (error "Missing gauth config file!"))
   (let* ((file-content
 	 (if (uiop/filesystem:file-exists-p
 	      (merge-pathnames ".config/gauth.csv.aes256" (user-homedir-pathname)))

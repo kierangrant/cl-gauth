@@ -26,5 +26,5 @@ sbcl --noinform --lose-on-corruption --no-userinit --no-sysinit --noprint --disa
 	   --eval """
 (handler-case
     (cl-gauth::main)
-  (error (e) (format *debug-io* \"An error occured: ~S~%\" e)))
+  (error (e) (format *debug-io* \"An error occured: ~A~%\" e)))
 """ --quit
