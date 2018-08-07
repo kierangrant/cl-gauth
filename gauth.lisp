@@ -43,7 +43,7 @@
 	      (merge-pathnames ".config/gauth.csv.aes256" (user-homedir-pathname)))
 	     (with-input-from-string (in
 				      (uiop/run-program:run-program 
-				       `("openssl" "enc" "-d" "-aes256" "-in"
+				       `("openssl" "enc" "-d" "-aes256" "-md" "sha256" "-in"
 						   ,(uiop/pathname:unix-namestring
 						     (merge-pathnames ".config/gauth.csv.aes256"
 								      (user-homedir-pathname))))

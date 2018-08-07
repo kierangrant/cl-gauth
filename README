@@ -31,3 +31,14 @@ ln -s ~/common-lisp/cl-gauth/run.sh ~/bin/gauth
 
 Make sure your gauth.csv or gauth.csv.aes256 is installed in ~/.config
 Also make sure only you can read it! (Recommended to use the encryption variant)
+
+NOTE: If you do encrypt, please be aware that OpenSSL has changed the default digest from
+MD5 to SHA256 Between versions. cl-gauth now assumes that SHA256 is used.
+If this is not the case you have two options:
+1) Re-encrypt your secret using SHA256 digest
+   openssl enc -d aes256 -in ~/.config/gauth.csv.aes256 -out /tmp/secure/gauth.csv.aes256 # with access to /tmp/secure locked down
+   openssl enc -aes256 -md sha256 -in /tmp/secure/gauth.csv.aes256 -out ~/.config/gauth.csv.aes256
+1) Change gauth.lisp to use a different message digest in call to openssl
+   change "sha256" to "md5"
+
+The former is recommended over the latter.
